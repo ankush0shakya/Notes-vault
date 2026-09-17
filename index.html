@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVault · AKTU B.Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f6f8fc;
+    --card: #ffffff;
+    --text: #0d1b2e;
+    --text2: #5a6b85;
+    --muted: #8a99b3;
+    --accent: #4361ee;
+    --accent-soft: #e8edff;
+    --border: #e3e9f3;
+    --notes-blue: #2563eb;
+    --pyq-orange: #d97706;
+    --success: #10b981;
+    --success-soft: #d1fae5;
+    --danger: #ef4444;
+    --admin: #7c3aed;
+    --admin-soft: #ede9fe;
+    --warning: #f59e0b;
+    --gate: #dc2626;
+    --gate-soft: #fee2e2;
+    --vlsi: #0891b2;
+    --vlsi-soft: #cffafe;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0a0f1c;
+    --card: #121a2b;
+    --text: #eef2f9;
+    --text2: #9aacc7;
+    --muted: #6a7a94;
+    --accent: #5b7cfa;
+    --accent-soft: #1e2a4a;
+    --border: #1f2a40;
+    --success-soft: rgba(16, 185, 129, 0.2);
+    --admin-soft: rgba(124, 58, 237, 0.2);
+    --gate-soft: rgba(220, 38, 38, 0.2);
+    --vlsi-soft: rgba(8, 145, 178, 0.2);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* NOTICE */
+  .notice-banner {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #78350f;
+    padding: 0.7rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  [data-theme="dark"] .notice-banner {
+    background: linear-gradient(135deg, #78350f, #451a03);
+    color: #fde68a;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0.9rem 2rem;
+  }
+  .topbar-inner {
+    max-width: 1300px; margin: 0 auto;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .logo { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; flex-shrink: 0; }
+  .logo-mark {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, #4361ee, #7c3aed);
+    color: white; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .logo h1 { font-size: 1.1rem; font-weight: 800; }
+  .logo span { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .search-box { flex: 1; max-width: 450px; position: relative; }
+  .search-box i.search-icon {
+    position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 0.9rem; pointer-events: none;
+  }
+  .search-box input {
+    width: 100%; padding: 0.7rem 2.5rem 0.7rem 2.6rem;
+    border: 1px solid var(--border); background: var(--card);
+    border-radius: 100px; font-family: inherit; font-size: 0.9rem;
+    color: var(--text); outline: none; transition: 0.25s;
+  }
+  .search-box input::placeholder { color: var(--muted); }
+  .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+  .search-clear {
+    position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%);
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--bg); color: var(--muted);
+    border: none; cursor: pointer; font-size: 0.7rem;
+    display: none; align-items: center; justify-content: center;
+  }
+  .search-clear.show { display: flex; }
+  .search-clear:hover { background: var(--accent); color: white; }
+
+  .topbar-actions { display: flex; align-items: center; gap: 0.6rem; margin-left: auto; }
+
+  .admin-btn {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 1.1rem; border-radius: 100px;
+    background: var(--admin-soft); color: var(--admin);
+    border: 1px solid transparent; cursor: pointer;
+    font-family: inherit; font-size: 0.82rem; font-weight: 700;
+    transition: 0.2s;
+  }
+  .admin-btn:hover { background: var(--admin); color: white; }
+
+  .upload-btn {
+    display: none; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 1.2rem; border-radius: 100px;
+    background: var(--accent); color: white;
+    border: none; cursor: pointer; font-family: inherit;
+    font-size: 0.85rem; font-weight: 700;
+    transition: 0.2s;
+  }
+  .upload-btn.show { display: flex; }
+  .upload-btn:hover { background: #3451d1; transform: translateY(-1px); }
+
+  .logout-btn {
+    display: none; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--card); color: var(--danger);
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 0.95rem; transition: 0.2s;
+  }
+  .logout-btn.show { display: flex; }
+  .logout-btn:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+  .theme-btn {
+    width: 40px; height: 40px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--text2); cursor: pointer; font-size: 0.95rem;
+    transition: 0.2s; flex-shrink: 0;
+  }
+  .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .admin-badge {
+    display: none; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.9rem; border-radius: 100px;
+    background: var(--admin-soft); color: var(--admin);
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .admin-badge.show { display: flex; }
+
+  /* LAYOUT */
+  .layout { max-width: 1300px; margin: 0 auto; padding: 2rem; }
+
+  .breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+    margin-bottom: 1.8rem; font-size: 0.85rem; color: var(--muted);
+  }
+  .crumb {
+    padding: 0.3rem 0.8rem; border-radius: 100px;
+    cursor: pointer; transition: 0.2s; font-weight: 500;
+  }
+  .crumb:hover:not(.active) { background: var(--card); color: var(--text); }
+  .crumb.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; cursor: default; }
+
+  .page-header { margin-bottom: 1.8rem; }
+  .page-header h2 {
+    font-size: 1.8rem; font-weight: 800;
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
+  .page-header h2 .hicon {
+    width: 44px; height: 44px; border-radius: 14px;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; flex-shrink: 0;
+  }
+  .page-header p { color: var(--text2); font-size: 0.92rem; }
+
+  /* HOME SECTION */
+  .home-section { margin-bottom: 3rem; }
+  .section-title {
+    font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-title .st-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.95rem;
+  }
+  .st-icon.btech { background: var(--accent-soft); color: var(--accent); }
+  .st-icon.gate { background: var(--gate-soft); color: var(--gate); }
+  .st-icon.vlsi { background: var(--vlsi-soft); color: var(--vlsi); }
+  .section-sub {
+    font-size: 0.85rem; color: var(--muted); font-weight: 500;
+    margin-left: auto;
+  }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+  }
+  .stat-item { display: flex; align-items: center; gap: 0.8rem; }
+  .stat-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .stat-icon.blue { background: #dbeafe; color: #2563eb; }
+  .stat-icon.green { background: var(--success-soft); color: var(--success); }
+  .stat-icon.orange { background: #fef3c7; color: #d97706; }
+  .stat-icon.purple { background: #ede9fe; color: #6d28d9; }
+  [data-theme="dark"] .stat-icon.blue { background: rgba(37,99,235,0.2); color: #93c5fd; }
+  [data-theme="dark"] .stat-icon.orange { background: rgba(217,119,6,0.2); color: #fcd34d; }
+  [data-theme="dark"] .stat-icon.purple { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+
+  .stat-info .stat-value {
+    font-size: 1.3rem; font-weight: 800; line-height: 1;
+  }
+  .stat-info .stat-label {
+    font-size: 0.72rem; color: var(--muted);
+    font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.05em; margin-top: 0.25rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .gallery-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.35s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .gallery-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(13, 27, 46, 0.25);
+    border-color: transparent;
+  }
+
+  .card-cover {
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cover-year1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .cover-year2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  .cover-year3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+  .cover-year4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+  .cover-sem { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+  .cover-cse { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .cover-ece { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  .cover-ee  { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
+  .cover-ce  { background: linear-gradient(135deg, #34d399 0%, #059669 100%); }
+  .cover-me  { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); }
+  .cover-it  { background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%); }
+  .cover-subject { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+  .cover-notes { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); }
+  .cover-pyq { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
+  /* GATE covers */
+  .cover-gate { background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%); }
+  .cover-gate-cse { background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%); }
+  .cover-gate-ece { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
+  .cover-gate-ee  { background: linear-gradient(135deg, #eab308 0%, #a16207 100%); }
+  .cover-gate-me  { background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%); }
+  .cover-gate-ce  { background: linear-gradient(135deg, #10b981 0%, #065f46 100%); }
+  .cover-gate-in  { background: linear-gradient(135deg, #8b5cf6 0%, #5b21b6 100%); }
+  /* VLSI covers */
+  .cover-vlsi { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); }
+  .cover-vlsi-cmos { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); }
+  .cover-vlsi-digital { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
+  .cover-vlsi-analog { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
+  .cover-vlsi-physical { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+
+  .cover-icon {
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+    transition: transform 0.4s;
+  }
+  .gallery-card:hover .cover-icon { transform: scale(1.15); }
+
+  .cover-downloads {
+    position: absolute;
+    top: 0.8rem; right: 0.8rem;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 0.3rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex; align-items: center; gap: 0.35rem;
+  }
+  .cover-downloads i { font-size: 0.65rem; }
+
+  .card-body {
+    padding: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: fit-content;
+  }
+  .badge-blue { background: var(--accent-soft); color: var(--accent); }
+  .badge-green { background: var(--success-soft); color: var(--success); }
+  .badge-purple { background: #ede9fe; color: #6d28d9; }
+  .badge-orange { background: #fef3c7; color: #d97706; }
+  .badge-red { background: var(--gate-soft); color: var(--gate); }
+  .badge-cyan { background: var(--vlsi-soft); color: var(--vlsi); }
+
+  .card-title-main {
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--text);
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .card-desc i { font-size: 0.75rem; color: var(--accent); }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+  .meta-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  .meta-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 100px;
+    background: var(--bg);
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .meta-tag.notes-tag { background: #dbeafe; color: #2563eb; border-color: transparent; }
+  .meta-tag.pyq-tag { background: #fef3c7; color: #d97706; border-color: transparent; }
+  .meta-tag.gate-tag { background: var(--gate-soft); color: var(--gate); border-color: transparent; }
+  .meta-tag.vlsi-tag { background: var(--vlsi-soft); color: var(--vlsi); border-color: transparent; }
+
+  .card-arrow-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--bg); color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; transition: all 0.3s;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .gallery-card:hover .card-arrow-btn {
+    background: var(--accent); color: white;
+    border-color: var(--accent);
+    transform: rotate(-45deg);
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    padding: 1.7rem;
+  }
+
+  .empty {
+    text-align: center; padding: 3rem 1rem; color: var(--muted);
+  }
+  .empty i { font-size: 2.5rem; opacity: 0.4; margin-bottom: 0.8rem; }
+  .empty h4 { font-size: 1.05rem; margin-bottom: 0.3rem; color: var(--text2); }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--card);
+    border-radius: 26px;
+    padding: 2rem;
+    max-width: 500px; width: 100%;
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.3s ease;
+    max-height: 90vh; overflow-y: auto;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal h3 {
+    font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .modal h3 i { color: var(--admin); }
+  .modal p { color: var(--text2); font-size: 0.88rem; margin-bottom: 1.5rem; }
+  .modal-input, .modal-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    margin-bottom: 1rem;
+  }
+  .modal-input:focus, .modal-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .modal-input::placeholder { color: var(--muted); }
+  .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; }
+  .btn {
+    padding: 0.7rem 1.4rem; border-radius: 100px;
+    border: 1px solid var(--border); background: var(--bg);
+    color: var(--text); font-family: inherit; font-size: 0.88rem;
+    font-weight: 700; cursor: pointer; transition: 0.2s;
+  }
+  .btn:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn-primary:hover { background: #3451d1; color: white; }
+  .btn-admin { background: var(--admin); color: white; border-color: var(--admin); }
+  .btn-admin:hover { background: #6d28d9; color: white; border-color: #6d28d9; }
+
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--text); color: var(--bg);
+    padding: 0.9rem 1.5rem; border-radius: 100px;
+    font-size: 0.88rem; font-weight: 600;
+    display: flex; align-items: center; gap: 0.6rem;
+    transition: transform 0.3s;
+    z-index: 300;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  footer {
+    max-width: 1300px; margin: 3rem auto 0;
+    padding: 1.8rem 2rem;
+    text-align: center; color: var(--muted);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 850px) {
+    .notice-banner { padding: 0.6rem 1rem; font-size: 0.78rem; }
+    .topbar { padding: 0.75rem 1rem; }
+    .topbar-inner { flex-wrap: wrap; gap: 0.7rem; }
+    .search-box { order: 3; flex-basis: 100%; max-width: none; }
+    .logo h1, .logo span { display: none; }
+    .upload-btn span { display: none; }
+    .upload-btn { padding: 0.65rem; width: 40px; justify-content: center; }
+    .admin-btn span { display: none; }
+    .admin-btn { padding: 0.65rem; width: 40px; justify-content: center; }
+    .admin-badge { display: none !important; }
+    .layout { padding: 1.2rem 1rem; }
+    .page-header h2 { font-size: 1.4rem; }
+    .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+    .card-cover { height: 110px; }
+    .cover-icon { font-size: 2.5rem; }
+    .section-title { font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NOTICE -->
+<div class="notice-banner">
+  <i class="fas fa-bullhorn"></i>
+  Abhi only 2nd Year ke hi notes upload hain — baaki years jald hi add honge
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo" onclick="goHome()">
+      <div class="logo-mark"><i class="fas fa-graduation-cap"></i></div>
+      <div>
+        <h1>StudyVault</h1>
+        <span>AKTU B.Tech</span>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <i class="fas fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search subjects, branches...">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="topbar-actions">
+      <div class="admin-badge" id="adminBadge">
+        <i class="fas fa-user-shield"></i> Admin
+      </div>
+      <button class="upload-btn" id="uploadBtn" onclick="openUploadModal()">
+        <i class="fas fa-cloud-arrow-up"></i>
+        <span>Upload</span>
+      </button>
+      <button class="admin-btn" id="adminBtn" onclick="openLoginModal()">
+        <i class="fas fa-user-shield"></i>
+        <span>Admin</span>
+      </button>
+      <button class="logout-btn" id="logoutBtn" onclick="logout()" title="Logout">
+        <i class="fas fa-right-from-bracket"></i>
+      </button>
+      <button class="theme-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <div id="view"></div>
+</div>
+
+<footer>
+  <strong>StudyVault</strong> · AKTU B.Tech Study Materials · BY REC Kannauj
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <h3><i class="fas fa-user-shield"></i> Admin Login</h3>
+    <p>Upload karne ke liye admin password daalo.</p>
+    <input type="password" class="modal-input" id="adminPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter') submitLogin()">
+    <div class="modal-actions">
+      <button class="btn" onclick="closeLoginModal()">Cancel</button>
+      <button class="btn btn-admin" onclick="submitLogin()">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal">
+    <h3><i class="fas fa-cloud-arrow-up"></i> Upload Notes / PYQ</h3>
+    <p>Subject select karo, type choose karo, aur Google Drive link paste karo.</p>
+    <select class="modal-select" id="uploadSubject">
+      <option value="">-- Subject choose karo --</option>
+    </select>
+    <select class="modal-select" id="uploadType">
+      <option value="">-- Type choose karo --</option>
+      <option value="notes">Notes</option>
+      <option value="pyq">PYQ</option>
+    </select>
+    <input type="text" class="modal-input" id="uploadLink" placeholder="https://drive.google.com/drive/folders/...">
+    <div class="modal-actions">
+      <button class="btn" onclick="closeUploadModal()">Cancel</button>
+      <button class="btn btn-admin" onclick="submitUpload()">
+        <i class="fas fa-check"></i> Upload
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle"></i>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN PASSWORD
+   ═══════════════════════════════════════════════════════════════ */
+var ADMIN_PASSWORD = 'admin123';
+
+/* ═══════════════════════════════════════════════════════════════
+   YEARS DATA (B.Tech)
+   ═══════════════════════════════════════════════════════════════ */
+var YEARS = [
+  {
+    id: 'year1', name: '1st Year', subtitle: 'Common to All Branches',
+    icon: 'fas fa-seedling', cover: 'cover-year1', type: 'common',
+    semesters: [
+      { id: 's1', name: 'Semester 1', subjects: [
+        { name: 'Engineering Mathematics-I', icon: 'fas fa-square-root-variable', code: 'BAS103', key: 'y1s1math1' },
+        { name: 'Engineering Physics', icon: 'fas fa-atom', code: 'BAS101', key: 'y1s1phy' },
+        { name: 'Engineering Chemistry', icon: 'fas fa-flask', code: 'BAS102', key: 'y1s1chem' },
+        { name: 'Programming for Problem Solving', icon: 'fas fa-code', code: 'BCS101', key: 'y1s1pps' },
+        { name: 'Basic Electrical Engineering', icon: 'fas fa-bolt', code: 'BEE101', key: 'y1s1bee' },
+        { name: 'Engineering Graphics & Design', icon: 'fas fa-drafting-compass', code: 'BCE101', key: 'y1s1egd' },
+        { name: 'Communication Skills', icon: 'fas fa-comments', code: 'BAS104', key: 'y1s1cs' }
+      ]},
+      { id: 's2', name: 'Semester 2', subjects: [
+        { name: 'Engineering Mathematics-II', icon: 'fas fa-infinity', code: 'BAS203', key: 'y1s2math2' },
+        { name: 'Applied Physics', icon: 'fas fa-microscope', code: 'BAS201', key: 'y1s2aphy' },
+        { name: 'Applied Chemistry', icon: 'fas fa-vial', code: 'BAS202', key: 'y1s2achem' },
+        { name: 'Object Oriented Programming', icon: 'fas fa-cubes', code: 'BCS201', key: 'y1s2oop' },
+        { name: 'Basic Electronics Engineering', icon: 'fas fa-microchip', code: 'BEC201', key: 'y1s2bee' },
+        { name: 'Engineering Mechanics', icon: 'fas fa-gears', code: 'BCE201', key: 'y1s2em' },
+        { name: 'Environmental Science', icon: 'fas fa-leaf', code: 'BAS204', key: 'y1s2es' }
+      ]}
+    ]
+  },
+  {
+    id: 'year2', name: '2nd Year', subtitle: 'Choose your branch',
+    icon: 'fas fa-code', cover: 'cover-year2', type: 'branchwise',
+    branches: [
+      { id: 'cse', name: 'CSE', full: 'Computer Science & Engineering', icon: 'fas fa-laptop-code', cover: 'cover-cse', semesters: [
+        { id: 's3', name: 'Semester 3', subjects: [
+          { name: 'Data Structures', icon: 'fas fa-sitemap', code: 'BCS301', key: 'y2cse_ds' },
+          { name: 'Digital Logic Design', icon: 'fas fa-microchip', code: 'BCS302', key: 'y2cse_dld' },
+          { name: 'Discrete Mathematics', icon: 'fas fa-calculator', code: 'BAS301', key: 'y2cse_dm' },
+          { name: 'Computer Organization', icon: 'fas fa-server', code: 'BCS303', key: 'y2cse_co' },
+          { name: 'OOP with Java', icon: 'fas fa-mug-hot', code: 'BCS304', key: 'y2cse_java' }
+        ]},
+        { id: 's4', name: 'Semester 4', subjects: [
+          { name: 'Algorithms', icon: 'fas fa-diagram-project', code: 'BCS401', key: 'y2cse_algo' },
+          { name: 'Operating Systems', icon: 'fas fa-hard-drive', code: 'BCS402', key: 'y2cse_os' },
+          { name: 'Database Management', icon: 'fas fa-database', code: 'BCS403', key: 'y2cse_dbms' },
+          { name: 'Theory of Computation', icon: 'fas fa-robot', code: 'BCS404', key: 'y2cse_toc' },
+          { name: 'Microprocessors', icon: 'fas fa-microchip', code: 'BCS405', key: 'y2cse_mp' }
+        ]}
+      ]},
+      { id: 'ece', name: 'ECE', full: 'Electronics & Communication', icon: 'fas fa-broadcast-tower', cover: 'cover-ece', semesters: [
+        { id: 's3', name: 'Semester 3', subjects: [
+          { name: 'Network Analysis & Synthesis', icon: 'fas fa-project-diagram', code: 'BEC-303', key: 'NAS' },
+          { name: 'Electronic Devices & Circuits', icon: 'fas fa-microchip', code: 'BEC-301', key: 'EDC' },
+          { name: 'Digital System Design', icon: 'fas fa-memory', code: 'BEC-302', key: 'DSD' },
+          { name: 'Cyber Security', icon: 'fas fa-shield-halved', code: 'KNC-301', key: 'CS' },
+          { name: 'Technical Communication', icon: 'fas fa-comments', code: 'KAS-301', key: 'TC' },
+          { name: 'Engineering Mathematics-IV', icon: 'fas fa-square-root-variable', code: 'KAS-302', key: 'MATH 4' }
+        ]},
+        { id: 's4', name: 'Semester 4', subjects: [
+          { name: 'Engineering Mathematics-II', icon: 'fas fa-infinity', code: 'KAS-401', key: 'y2ece_em2' },
+          { name: 'Signals & Systems', icon: 'fas fa-wave-square', code: 'KEC-402', key: 'y2ece_ss' },
+          { name: 'Digital Electronics', icon: 'fas fa-toggle-on', code: 'KEC-403', key: 'y2ece_de' },
+          { name: 'Electromagnetic Field Theory', icon: 'fas fa-magnet', code: 'KEC-404', key: 'y2ece_emft' },
+          { name: 'Analog Circuits', icon: 'fas fa-wave-square', code: 'KEC-405', key: 'y2ece_ac' },
+          { name: 'Environmental Science', icon: 'fas fa-leaf', code: 'KAS-406', key: 'y2ece_ess' }
+        ]}
+      ]},
+      { id: 'ee', name: 'EE', full: 'Electrical Engineering', icon: 'fas fa-bolt', cover: 'cover-ee', semesters: [
+        { id: 's3', name: 'Semester 3', subjects: [
+          { name: 'Electromagnetic Field Theory', icon: 'fas fa-magnet', code: 'BEE301', key: 'y2ee_emft' },
+          { name: 'Electrical Measurements', icon: 'fas fa-gauge', code: 'BEE302', key: 'y2ee_em' },
+          { name: 'Signals & Systems', icon: 'fas fa-wave-square', code: 'BEE303', key: 'y2ee_ss' },
+          { name: 'Analog Electronics', icon: 'fas fa-wave-square', code: 'BEE304', key: 'y2ee_ae' },
+          { name: 'Circuit Analysis', icon: 'fas fa-project-diagram', code: 'BEE305', key: 'y2ee_ca' }
+        ]},
+        { id: 's4', name: 'Semester 4', subjects: [
+          { name: 'Electrical Machines-I', icon: 'fas fa-fan', code: 'BEE401', key: 'y2ee_em1' },
+          { name: 'Network Analysis', icon: 'fas fa-network-wired', code: 'BEE402', key: 'y2ee_na' },
+          { name: 'Analog & Digital Electronics', icon: 'fas fa-microchip', code: 'BEE403', key: 'y2ee_ade' },
+          { name: 'Mathematics-III', icon: 'fas fa-square-root-variable', code: 'BAS401', key: 'y2ee_m3' },
+          { name: 'Electrical Workshop', icon: 'fas fa-screwdriver-wrench', code: 'BEE404', key: 'y2ee_ew' }
+        ]}
+      ]},
+      { id: 'ce', name: 'CE', full: 'Civil Engineering', icon: 'fas fa-building', cover: 'cover-ce', semesters: [
+        { id: 's3', name: 'Semester 3', subjects: [
+          { name: 'Structural Analysis', icon: 'fas fa-building', code: 'BCE301', key: 'y2ce_sa' },
+          { name: 'Concrete Technology', icon: 'fas fa-cubes', code: 'BCE302', key: 'y2ce_ct' },
+          { name: 'Fluid Mechanics', icon: 'fas fa-water', code: 'BCE303', key: 'y2ce_fm' },
+          { name: 'Surveying', icon: 'fas fa-map', code: 'BCE304', key: 'y2ce_sv' },
+          { name: 'Geotechnical Engineering', icon: 'fas fa-mountain', code: 'BCE305', key: 'y2ce_ge' }
+        ]},
+        { id: 's4', name: 'Semester 4', subjects: [
+          { name: 'Steel Structures', icon: 'fas fa-industry', code: 'BCE401', key: 'y2ce_ss' },
+          { name: 'Hydrology', icon: 'fas fa-cloud-rain', code: 'BCE402', key: 'y2ce_hy' },
+          { name: 'Transportation Engineering', icon: 'fas fa-road', code: 'BCE403', key: 'y2ce_te' },
+          { name: 'Environmental Engineering', icon: 'fas fa-recycle', code: 'BCE404', key: 'y2ce_ee' },
+          { name: 'Estimation & Costing', icon: 'fas fa-calculator', code: 'BCE405', key: 'y2ce_ec' }
+        ]}
+      ]},
+      { id: 'me', name: 'ME', full: 'Mechanical Engineering', icon: 'fas fa-cog', cover: 'cover-me', semesters: [
+        { id: 's3', name: 'Semester 3', subjects: [
+          { name: 'Thermodynamics', icon: 'fas fa-temperature-high', code: 'BME301', key: 'y2me_td' },
+          { name: 'Strength of Materials', icon: 'fas fa-dumbbell', code: 'BME302', key: 'y2me_som' },
+          { name: 'Fluid Mechanics', icon: 'fas fa-water', code: 'BME303', key: 'y2me_fm' },
+          { name: 'Manufacturing Science', icon: 'fas fa-industry', code: 'BME304', key: 'y2me_ms' },
+          { name: 'Machine Drawing', icon: 'fas fa-drafting-compass', code: 'BME305', key: 'y2me_md' }
+        ]},
+        { id: 's4', name: 'Semester 4', subjects: [
+          { name: 'Heat Transfer', icon: 'fas fa-fire', code: 'BME401', key: 'y2me_ht' },
+          { name: 'Theory of Machines', icon: 'fas fa-gears', code: 'BME402', key: 'y2me_tom' },
+          { name: 'Material Science', icon: 'fas fa-cube', code: 'BME403', key: 'y2me_ms2' },
+          { name: 'Industrial Engineering', icon: 'fas fa-industry', code: 'BME404', key: 'y2me_ie' },
+          { name: 'Dynamics of Machinery', icon: 'fas fa-running', code: 'BME405', key: 'y2me_dom' }
+        ]}
+      ]},
+      { id: 'it', name: 'IT', full: 'Information Technology', icon: 'fas fa-network-wired', cover: 'cover-it', semesters: [
+        { id: 's3', name: 'Semester 3', subjects: [
+          { name: 'Data Structures', icon: 'fas fa-sitemap', code: 'BIT301', key: 'y2it_ds' },
+          { name: 'Digital Logic Design', icon: 'fas fa-microchip', code: 'BIT302', key: 'y2it_dld' },
+          { name: 'Discrete Mathematics', icon: 'fas fa-calculator', code: 'BIT303', key: 'y2it_dm' },
+          { name: 'Python Programming', icon: 'fab fa-python', code: 'BIT304', key: 'y2it_py' },
+          { name: 'Computer Organization', icon: 'fas fa-server', code: 'BIT305', key: 'y2it_co' }
+        ]},
+        { id: 's4', name: 'Semester 4', subjects: [
+          { name: 'Algorithms', icon: 'fas fa-diagram-project', code: 'BIT401', key: 'y2it_algo' },
+          { name: 'DBMS', icon: 'fas fa-database', code: 'BIT402', key: 'y2it_dbms' },
+          { name: 'Computer Networks', icon: 'fas fa-network-wired', code: 'BIT403', key: 'y2it_cn' },
+          { name: 'Web Technologies', icon: 'fas fa-globe', code: 'BIT404', key: 'y2it_wt' },
+          { name: 'Software Engineering', icon: 'fas fa-code-branch', code: 'BIT405', key: 'y2it_se' }
+        ]}
+      ]}
+    ]
+  },
+  {
+    id: 'year3', name: '3rd Year', subtitle: 'Choose your branch',
+    icon: 'fas fa-microchip', cover: 'cover-year3', type: 'branchwise',
+    branches: [
+      { id: 'cse', name: 'CSE', full: 'Computer Science & Engineering', icon: 'fas fa-laptop-code', cover: 'cover-cse', semesters: [
+        { id: 's5', name: 'Semester 5', subjects: [
+          { name: 'Computer Networks', icon: 'fas fa-network-wired', code: 'BCS501', key: 'y3cse_cn' },
+          { name: 'Software Engineering', icon: 'fas fa-code-branch', code: 'BCS502', key: 'y3cse_se' },
+          { name: 'Compiler Design', icon: 'fas fa-language', code: 'BCS503', key: 'y3cse_cd' },
+          { name: 'Web Technologies', icon: 'fas fa-globe', code: 'BCS504', key: 'y3cse_wt' },
+          { name: 'Artificial Intelligence', icon: 'fas fa-brain', code: 'BCS505', key: 'y3cse_ai' }
+        ]},
+        { id: 's6', name: 'Semester 6', subjects: [
+          { name: 'Machine Learning', icon: 'fas fa-robot', code: 'BCS601', key: 'y3cse_ml' },
+          { name: 'Cloud Computing', icon: 'fas fa-cloud', code: 'BCS602', key: 'y3cse_cc' },
+          { name: 'Information Security', icon: 'fas fa-shield-halved', code: 'BCS603', key: 'y3cse_is' },
+          { name: 'Mobile Computing', icon: 'fas fa-mobile-screen', code: 'BCS604', key: 'y3cse_mc' },
+          { name: 'Big Data', icon: 'fas fa-database', code: 'BCS605', key: 'y3cse_bd' }
+        ]}
+      ]},
+      { id: 'ece', name: 'ECE', full: 'Electronics & Communication', icon: 'fas fa-broadcast-tower', cover: 'cover-ece', semesters: [
+        { id: 's5', name: 'Semester 5', subjects: [
+          { name: 'VLSI Design', icon: 'fas fa-microchip', code: 'BEC501', key: 'y3ece_vlsi' },
+          { name: 'Digital Signal Processing', icon: 'fas fa-wave-square', code: 'BEC502', key: 'y3ece_dsp' },
+          { name: 'Antenna Theory', icon: 'fas fa-satellite-dish', code: 'BEC503', key: 'y3ece_at' },
+          { name: 'Microcontrollers', icon: 'fas fa-microchip', code: 'BEC504', key: 'y3ece_mc' },
+          { name: 'Optical Communication', icon: 'fas fa-lightbulb', code: 'BEC505', key: 'y3ece_oc' }
+        ]},
+        { id: 's6', name: 'Semester 6', subjects: [
+          { name: 'Embedded Systems', icon: 'fas fa-microchip', code: 'BEC601', key: 'y3ece_es' },
+          { name: 'Wireless Communication', icon: 'fas fa-wifi', code: 'BEC602', key: 'y3ece_wc' },
+          { name: 'Satellite Communication', icon: 'fas fa-satellite', code: 'BEC603', key: 'y3ece_sc' },
+          { name: 'Nanoelectronics', icon: 'fas fa-atom', code: 'BEC604', key: 'y3ece_ne' },
+          { name: 'RF Design', icon: 'fas fa-tower-broadcast', code: 'BEC605', key: 'y3ece_rf' }
+        ]}
+      ]},
+      { id: 'ee', name: 'EE', full: 'Electrical Engineering', icon: 'fas fa-bolt', cover: 'cover-ee', semesters: [
+        { id: 's5', name: 'Semester 5', subjects: [
+          { name: 'Power System-I', icon: 'fas fa-plug', code: 'BEE501', key: 'y3ee_ps1' },
+          { name: 'Control Systems', icon: 'fas fa-sliders', code: 'BEE502', key: 'y3ee_cs' },
+          { name: 'Electrical Machines-II', icon: 'fas fa-fan', code: 'BEE503', key: 'y3ee_em2' },
+          { name: 'Microprocessors', icon: 'fas fa-microchip', code: 'BEE504', key: 'y3ee_mp' },
+          { name: 'Power Electronics', icon: 'fas fa-bolt', code: 'BEE505', key: 'y3ee_pe' }
+        ]},
+        { id: 's6', name: 'Semester 6', subjects: [
+          { name: 'Power System-II', icon: 'fas fa-plug', code: 'BEE601', key: 'y3ee_ps2' },
+          { name: 'Electrical Machine Design', icon: 'fas fa-fan', code: 'BEE602', key: 'y3ee_emd' },
+          { name: 'Digital Signal Processing', icon: 'fas fa-wave-square', code: 'BEE603', key: 'y3ee_dsp' },
+          { name: 'Electrical Drives', icon: 'fas fa-bolt', code: 'BEE604', key: 'y3ee_ed' },
+          { name: 'Utilization of Electrical Energy', icon: 'fas fa-lightbulb', code: 'BEE605', key: 'y3ee_uee' }
+        ]}
+      ]},
+      { id: 'ce', name: 'CE', full: 'Civil Engineering', icon: 'fas fa-building', cover: 'cover-ce', semesters: [
+        { id: 's5', name: 'Semester 5', subjects: [
+          { name: 'Design of Structures', icon: 'fas fa-building', code: 'BCE501', key: 'y3ce_ds' },
+          { name: 'Water Resources', icon: 'fas fa-water', code: 'BCE502', key: 'y3ce_wr' },
+          { name: 'Foundation Engineering', icon: 'fas fa-mountain', code: 'BCE503', key: 'y3ce_fe' },
+          { name: 'Construction Management', icon: 'fas fa-hard-hat', code: 'BCE504', key: 'y3ce_cm' },
+          { name: 'Remote Sensing', icon: 'fas fa-satellite', code: 'BCE505', key: 'y3ce_rs' }
+        ]},
+        { id: 's6', name: 'Semester 6', subjects: [
+          { name: 'Earthquake Engineering', icon: 'fas fa-house-crack', code: 'BCE601', key: 'y3ce_eq' },
+          { name: 'Advanced Structural Design', icon: 'fas fa-building', code: 'BCE602', key: 'y3ce_asd' },
+          { name: 'Transportation-II', icon: 'fas fa-road', code: 'BCE603', key: 'y3ce_t2' },
+          { name: 'Environmental-II', icon: 'fas fa-recycle', code: 'BCE604', key: 'y3ce_e2' },
+          { name: 'GIS', icon: 'fas fa-map', code: 'BCE605', key: 'y3ce_gis' }
+        ]}
+      ]},
+      { id: 'me', name: 'ME', full: 'Mechanical Engineering', icon: 'fas fa-cog', cover: 'cover-me', semesters: [
+        { id: 's5', name: 'Semester 5', subjects: [
+          { name: 'IC Engines', icon: 'fas fa-engine', code: 'BME501', key: 'y3me_ic' },
+          { name: 'Refrigeration & AC', icon: 'fas fa-snowflake', code: 'BME502', key: 'y3me_rac' },
+          { name: 'Machine Design', icon: 'fas fa-gears', code: 'BME503', key: 'y3me_md' },
+          { name: 'CAD/CAM', icon: 'fas fa-cube', code: 'BME504', key: 'y3me_cad' },
+          { name: 'Operations Research', icon: 'fas fa-chart-line', code: 'BME505', key: 'y3me_or' }
+        ]},
+        { id: 's6', name: 'Semester 6', subjects: [
+          { name: 'Automobile Engineering', icon: 'fas fa-car', code: 'BME601', key: 'y3me_ae' },
+          { name: 'Robotics', icon: 'fas fa-robot', code: 'BME602', key: 'y3me_rb' },
+          { name: 'Power Plant Engineering', icon: 'fas fa-industry', code: 'BME603', key: 'y3me_pp' },
+          { name: 'Industrial Automation', icon: 'fas fa-industry', code: 'BME604', key: 'y3me_ia' },
+          { name: 'FEM', icon: 'fas fa-cube', code: 'BME605', key: 'y3me_fem' }
+        ]}
+      ]},
+      { id: 'it', name: 'IT', full: 'Information Technology', icon: 'fas fa-network-wired', cover: 'cover-it', semesters: [
+        { id: 's5', name: 'Semester 5', subjects: [
+          { name: 'Computer Networks', icon: 'fas fa-network-wired', code: 'BIT501', key: 'y3it_cn' },
+          { name: 'Software Engineering', icon: 'fas fa-code-branch', code: 'BIT502', key: 'y3it_se' },
+          { name: 'Web Technologies', icon: 'fas fa-globe', code: 'BIT503', key: 'y3it_wt' },
+          { name: 'Data Mining', icon: 'fas fa-database', code: 'BIT504', key: 'y3it_dm' },
+          { name: 'AI', icon: 'fas fa-brain', code: 'BIT505', key: 'y3it_ai' }
+        ]},
+        { id: 's6', name: 'Semester 6', subjects: [
+          { name: 'Machine Learning', icon: 'fas fa-robot', code: 'BIT601', key: 'y3it_ml' },
+          { name: 'Cloud Computing', icon: 'fas fa-cloud', code: 'BIT602', key: 'y3it_cc' },
+          { name: 'Cyber Security', icon: 'fas fa-shield-halved', code: 'BIT603', key: 'y3it_cs' },
+          { name: 'IoT', icon: 'fas fa-microchip', code: 'BIT604', key: 'y3it_iot' },
+          { name: 'Big Data', icon: 'fas fa-database', code: 'BIT605', key: 'y3it_bd' }
+        ]}
+      ]}
+    ]
+  },
+  {
+    id: 'year4', name: '4th Year', subtitle: 'Choose your branch',
+    icon: 'fas fa-rocket', cover: 'cover-year4', type: 'branchwise',
+    branches: [
+      { id: 'cse', name: 'CSE', full: 'Computer Science & Engineering', icon: 'fas fa-laptop-code', cover: 'cover-cse', semesters: [
+        { id: 's7', name: 'Semester 7', subjects: [
+          { name: 'Deep Learning', icon: 'fas fa-brain', code: 'BCS701', key: 'y4cse_dl' },
+          { name: 'Blockchain', icon: 'fas fa-link', code: 'BCS702', key: 'y4cse_bc' },
+          { name: 'Internet of Things', icon: 'fas fa-microchip', code: 'BCS703', key: 'y4cse_iot' },
+          { name: 'Project Management', icon: 'fas fa-tasks', code: 'BCS704', key: 'y4cse_pm' }
+        ]},
+        { id: 's8', name: 'Semester 8', subjects: [
+          { name: 'Major Project', icon: 'fas fa-diagram-project', code: 'BCS801', key: 'y4cse_proj' },
+          { name: 'Internship', icon: 'fas fa-briefcase', code: 'BCS802', key: 'y4cse_intern' },
+          { name: 'Seminar', icon: 'fas fa-chalkboard', code: 'BCS803', key: 'y4cse_sem' },
+          { name: 'Comprehensive Viva', icon: 'fas fa-comments', code: 'BCS804', key: 'y4cse_viva' }
+        ]}
+      ]},
+      { id: 'ece', name: 'ECE', full: 'Electronics & Communication', icon: 'fas fa-broadcast-tower', cover: 'cover-ece', semesters: [
+        { id: 's7', name: 'Semester 7', subjects: [
+          { name: '5G Networks', icon: 'fas fa-tower-broadcast', code: 'BEC701', key: 'y4ece_5g' },
+          { name: 'MEMS', icon: 'fas fa-microchip', code: 'BEC702', key: 'y4ece_mems' },
+          { name: 'AI Hardware', icon: 'fas fa-brain', code: 'BEC703', key: 'y4ece_aih' },
+          { name: 'Project Management', icon: 'fas fa-tasks', code: 'BEC704', key: 'y4ece_pm' }
+        ]},
+        { id: 's8', name: 'Semester 8', subjects: [
+          { name: 'Major Project', icon: 'fas fa-diagram-project', code: 'BEC801', key: 'y4ece_proj' },
+          { name: 'Internship', icon: 'fas fa-briefcase', code: 'BEC802', key: 'y4ece_intern' },
+          { name: 'Seminar', icon: 'fas fa-chalkboard', code: 'BEC803', key: 'y4ece_sem' },
+          { name: 'Comprehensive Viva', icon: 'fas fa-comments', code: 'BEC804', key: 'y4ece_viva' }
+        ]}
+      ]},
+      { id: 'ee', name: 'EE', full: 'Electrical Engineering', icon: 'fas fa-bolt', cover: 'cover-ee', semesters: [
+        { id: 's7', name: 'Semester 7', subjects: [
+          { name: 'Electric Drives', icon: 'fas fa-bolt', code: 'BEE701', key: 'y4ee_ed' },
+          { name: 'Power System Protection', icon: 'fas fa-shield-halved', code: 'BEE702', key: 'y4ee_psp' },
+          { name: 'Renewable Energy', icon: 'fas fa-solar-panel', code: 'BEE703', key: 'y4ee_re' },
+          { name: 'Smart Grid', icon: 'fas fa-network-wired', code: 'BEE704', key: 'y4ee_sg' }
+        ]},
+        { id: 's8', name: 'Semester 8', subjects: [
+          { name: 'Major Project', icon: 'fas fa-diagram-project', code: 'BEE801', key: 'y4ee_proj' },
+          { name: 'Internship', icon: 'fas fa-briefcase', code: 'BEE802', key: 'y4ee_intern' },
+          { name: 'Seminar', icon: 'fas fa-chalkboard', code: 'BEE803', key: 'y4ee_sem' },
+          { name: 'Comprehensive Viva', icon: 'fas fa-comments', code: 'BEE804', key: 'y4ee_viva' }
+        ]}
+      ]},
+      { id: 'ce', name: 'CE', full: 'Civil Engineering', icon: 'fas fa-building', cover: 'cover-ce', semesters: [
+        { id: 's7', name: 'Semester 7', subjects: [
+          { name: 'Smart Cities', icon: 'fas fa-city', code: 'BCE701', key: 'y4ce_sc' },
+          { name: 'Green Buildings', icon: 'fas fa-leaf', code: 'BCE702', key: 'y4ce_gb' },
+          { name: 'Project Management', icon: 'fas fa-tasks', code: 'BCE703', key: 'y4ce_pm' },
+          { name: 'Prefabrication', icon: 'fas fa-cubes', code: 'BCE704', key: 'y4ce_pf' }
+        ]},
+        { id: 's8', name: 'Semester 8', subjects: [
+          { name: 'Major Project', icon: 'fas fa-diagram-project', code: 'BCE801', key: 'y4ce_proj' },
+          { name: 'Internship', icon: 'fas fa-briefcase', code: 'BCE802', key: 'y4ce_intern' },
+          { name: 'Seminar', icon: 'fas fa-chalkboard', code: 'BCE803', key: 'y4ce_sem' },
+          { name: 'Comprehensive Viva', icon: 'fas fa-comments', code: 'BCE804', key: 'y4ce_viva' }
+        ]}
+      ]},
+      { id: 'me', name: 'ME', full: 'Mechanical Engineering', icon: 'fas fa-cog', cover: 'cover-me', semesters: [
+        { id: 's7', name: 'Semester 7', subjects: [
+          { name: 'Mechatronics', icon: 'fas fa-robot', code: 'BME701', key: 'y4me_mt' },
+          { name: 'Additive Manufacturing', icon: 'fas fa-cube', code: 'BME702', key: 'y4me_am' },
+          { name: 'Robotics', icon: 'fas fa-robot', code: 'BME703', key: 'y4me_rb' },
+          { name: 'Project Management', icon: 'fas fa-tasks', code: 'BME704', key: 'y4me_pm' }
+        ]},
+        { id: 's8', name: 'Semester 8', subjects: [
+          { name: 'Major Project', icon: 'fas fa-diagram-project', code: 'BME801', key: 'y4me_proj' },
+          { name: 'Internship', icon: 'fas fa-briefcase', code: 'BME802', key: 'y4me_intern' },
+          { name: 'Seminar', icon: 'fas fa-chalkboard', code: 'BME803', key: 'y4me_sem' },
+          { name: 'Comprehensive Viva', icon: 'fas fa-comments', code: 'BME804', key: 'y4me_viva' }
+        ]}
+      ]},
+      { id: 'it', name: 'IT', full: 'Information Technology', icon: 'fas fa-network-wired', cover: 'cover-it', semesters: [
+        { id: 's7', name: 'Semester 7', subjects: [
+          { name: 'Deep Learning', icon: 'fas fa-brain', code: 'BIT701', key: 'y4it_dl' },
+          { name: 'Blockchain', icon: 'fas fa-link', code: 'BIT702', key: 'y4it_bc' },
+          { name: 'IoT', icon: 'fas fa-microchip', code: 'BIT703', key: 'y4it_iot' },
+          { name: 'Cloud Security', icon: 'fas fa-cloud', code: 'BIT704', key: 'y4it_cs' }
+        ]},
+        { id: 's8', name: 'Semester 8', subjects: [
+          { name: 'Major Project', icon: 'fas fa-diagram-project', code: 'BIT801', key: 'y4it_proj' },
+          { name: 'Internship', icon: 'fas fa-briefcase', code: 'BIT802', key: 'y4it_intern' },
+          { name: 'Seminar', icon: 'fas fa-chalkboard', code: 'BIT803', key: 'y4it_sem' },
+          { name: 'Comprehensive Viva', icon: 'fas fa-comments', code: 'BIT804', key: 'y4it_viva' }
+        ]}
+      ]}
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   PW GATE NOTES — Branchwise → Subjectwise
+   ═══════════════════════════════════════════════════════════════ */
+var GATE_DATA = {
+  id: 'gate',
+  name: 'PW GATE Notes',
+  subtitle: 'Physics Wallah GATE Preparation',
+  icon: 'fas fa-medal',
+  cover: 'cover-gate',
+  branches: [
+    { id: 'gate-cse', name: 'GATE CSE', full: 'Computer Science & IT', icon: 'fas fa-laptop-code', cover: 'cover-gate-cse', subjects: [
+      { name: 'Discrete Mathematics', icon: 'fas fa-calculator', code: 'GATE-CSE-01', key: 'gate_cse_dm' },
+      { name: 'Data Structures', icon: 'fas fa-sitemap', code: 'GATE-CSE-02', key: 'gate_cse_ds' },
+      { name: 'Algorithms', icon: 'fas fa-diagram-project', code: 'GATE-CSE-03', key: 'gate_cse_algo' },
+      { name: 'Operating Systems', icon: 'fas fa-hard-drive', code: 'GATE-CSE-04', key: 'gate_cse_os' },
+      { name: 'DBMS', icon: 'fas fa-database', code: 'GATE-CSE-05', key: 'gate_cse_dbms' },
+      { name: 'Computer Networks', icon: 'fas fa-network-wired', code: 'GATE-CSE-06', key: 'gate_cse_cn' },
+      { name: 'Theory of Computation', icon: 'fas fa-robot', code: 'GATE-CSE-07', key: 'gate_cse_toc' },
+      { name: 'Compiler Design', icon: 'fas fa-language', code: 'GATE-CSE-08', key: 'gate_cse_cd' },
+      { name: 'Digital Logic', icon: 'fas fa-microchip', code: 'GATE-CSE-09', key: 'gate_cse_dl' },
+      { name: 'Computer Organization', icon: 'fas fa-server', code: 'GATE-CSE-10', key: 'gate_cse_co' }
+    ]},
+    { id: 'gate-ece', name: 'GATE ECE', full: 'Electronics & Communication', icon: 'fas fa-broadcast-tower', cover: 'cover-gate-ece', subjects: [
+      { name: 'Network Theory', icon: 'fas fa-project-diagram', code: 'GATE-ECE-01', key: 'gate_ece_nt' },
+      { name: 'Electronic Devices', icon: 'fas fa-microchip', code: 'GATE-ECE-02', key: 'gate_ece_ed' },
+      { name: 'Analog Circuits', icon: 'fas fa-wave-square', code: 'GATE-ECE-03', key: 'gate_ece_ac' },
+      { name: 'Digital Circuits', icon: 'fas fa-memory', code: 'GATE-ECE-04', key: 'gate_ece_dc' },
+      { name: 'Signals & Systems', icon: 'fas fa-wave-square', code: 'GATE-ECE-05', key: 'gate_ece_ss' },
+      { name: 'Control Systems', icon: 'fas fa-sliders', code: 'GATE-ECE-06', key: 'gate_ece_cs' },
+      { name: 'Communication Systems', icon: 'fas fa-satellite-dish', code: 'GATE-ECE-07', key: 'gate_ece_comm' },
+      { name: 'Electromagnetics', icon: 'fas fa-magnet', code: 'GATE-ECE-08', key: 'gate_ece_emt' },
+      { name: 'Engineering Mathematics', icon: 'fas fa-square-root-variable', code: 'GATE-ECE-09', key: 'gate_ece_math' },
+      { name: 'General Aptitude', icon: 'fas fa-brain', code: 'GATE-ECE-10', key: 'gate_ece_ga' }
+    ]},
+    { id: 'gate-ee', name: 'GATE EE', full: 'Electrical Engineering', icon: 'fas fa-bolt', cover: 'cover-gate-ee', subjects: [
+      { name: 'Electric Circuits', icon: 'fas fa-project-diagram', code: 'GATE-EE-01', key: 'gate_ee_ec' },
+      { name: 'Electromagnetic Fields', icon: 'fas fa-magnet', code: 'GATE-EE-02', key: 'gate_ee_emf' },
+      { name: 'Signals & Systems', icon: 'fas fa-wave-square', code: 'GATE-EE-03', key: 'gate_ee_ss' },
+      { name: 'Electrical Machines', icon: 'fas fa-fan', code: 'GATE-EE-04', key: 'gate_ee_em' },
+      { name: 'Power Systems', icon: 'fas fa-plug', code: 'GATE-EE-05', key: 'gate_ee_ps' },
+      { name: 'Control Systems', icon: 'fas fa-sliders', code: 'GATE-EE-06', key: 'gate_ee_cs' },
+      { name: 'Power Electronics', icon: 'fas fa-bolt', code: 'GATE-EE-07', key: 'gate_ee_pe' },
+      { name: 'Electrical Measurements', icon: 'fas fa-gauge', code: 'GATE-EE-08', key: 'gate_ee_meas' },
+      { name: 'Analog & Digital Electronics', icon: 'fas fa-microchip', code: 'GATE-EE-09', key: 'gate_ee_ade' },
+      { name: 'General Aptitude', icon: 'fas fa-brain', code: 'GATE-EE-10', key: 'gate_ee_ga' }
+    ]},
+    { id: 'gate-me', name: 'GATE ME', full: 'Mechanical Engineering', icon: 'fas fa-cog', cover: 'cover-gate-me', subjects: [
+      { name: 'Engineering Mathematics', icon: 'fas fa-square-root-variable', code: 'GATE-ME-01', key: 'gate_me_math' },
+      { name: 'Applied Mechanics', icon: 'fas fa-gears', code: 'GATE-ME-02', key: 'gate_me_am' },
+      { name: 'Strength of Materials', icon: 'fas fa-dumbbell', code: 'GATE-ME-03', key: 'gate_me_som' },
+      { name: 'Thermodynamics', icon: 'fas fa-temperature-high', code: 'GATE-ME-04', key: 'gate_me_td' },
+      { name: 'Fluid Mechanics', icon: 'fas fa-water', code: 'GATE-ME-05', key: 'gate_me_fm' },
+      { name: 'Heat Transfer', icon: 'fas fa-fire', code: 'GATE-ME-06', key: 'gate_me_ht' },
+      { name: 'Theory of Machines', icon: 'fas fa-gears', code: 'GATE-ME-07', key: 'gate_me_tom' },
+      { name: 'Machine Design', icon: 'fas fa-drafting-compass', code: 'GATE-ME-08', key: 'gate_me_md' },
+      { name: 'Manufacturing', icon: 'fas fa-industry', code: 'GATE-ME-09', key: 'gate_me_mfg' },
+      { name: 'General Aptitude', icon: 'fas fa-brain', code: 'GATE-ME-10', key: 'gate_me_ga' }
+    ]},
+    { id: 'gate-ce', name: 'GATE CE', full: 'Civil Engineering', icon: 'fas fa-building', cover: 'cover-gate-ce', subjects: [
+      { name: 'Engineering Mathematics', icon: 'fas fa-square-root-variable', code: 'GATE-CE-01', key: 'gate_ce_math' },
+      { name: 'Structural Engineering', icon: 'fas fa-building', code: 'GATE-CE-02', key: 'gate_ce_se' },
+      { name: 'Geotechnical Engineering', icon: 'fas fa-mountain', code: 'GATE-CE-03', key: 'gate_ce_ge' },
+      { name: 'Water Resources', icon: 'fas fa-water', code: 'GATE-CE-04', key: 'gate_ce_wr' },
+      { name: 'Environmental Engineering', icon: 'fas fa-recycle', code: 'GATE-CE-05', key: 'gate_ce_ee' },
+      { name: 'Transportation Engineering', icon: 'fas fa-road', code: 'GATE-CE-06', key: 'gate_ce_te' },
+      { name: 'Surveying', icon: 'fas fa-map', code: 'GATE-CE-07', key: 'gate_ce_sv' },
+      { name: 'General Aptitude', icon: 'fas fa-brain', code: 'GATE-CE-08', key: 'gate_ce_ga' }
+    ]},
+    { id: 'gate-in', name: 'GATE IN', full: 'Instrumentation Engineering', icon: 'fas fa-gauge', cover: 'cover-gate-in', subjects: [
+      { name: 'Engineering Mathematics', icon: 'fas fa-square-root-variable', code: 'GATE-IN-01', key: 'gate_in_math' },
+      { name: 'Electrical Circuits', icon: 'fas fa-project-diagram', code: 'GATE-IN-02', key: 'gate_in_ec' },
+      { name: 'Signals & Systems', icon: 'fas fa-wave-square', code: 'GATE-IN-03', key: 'gate_in_ss' },
+      { name: 'Control Systems', icon: 'fas fa-sliders', code: 'GATE-IN-04', key: 'gate_in_cs' },
+      { name: 'Analog Electronics', icon: 'fas fa-wave-square', code: 'GATE-IN-05', key: 'gate_in_ae' },
+      { name: 'Digital Electronics', icon: 'fas fa-memory', code: 'GATE-IN-06', key: 'gate_in_de' },
+      { name: 'Measurements', icon: 'fas fa-gauge', code: 'GATE-IN-07', key: 'gate_in_meas' },
+      { name: 'General Aptitude', icon: 'fas fa-brain', code: 'GATE-IN-08', key: 'gate_in_ga' }
+    ]}
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   VLSI CHIP CRAFT — Subjectwise folders
+   ═══════════════════════════════════════════════════════════════ */
+var VLSI_DATA = {
+  id: 'vlsi',
+  name: 'VLSI Chip Craft',
+  subtitle: 'VLSI Design & Chip Crafting',
+  icon: 'fas fa-microchip',
+  cover: 'cover-vlsi',
+  subjects: [
+    { name: 'CMOS Fundamentals', icon: 'fas fa-microchip', code: 'VLSI-01', cover: 'cover-vlsi-cmos', key: 'vlsi_cmos' },
+    { name: 'Digital VLSI Design', icon: 'fas fa-memory', code: 'VLSI-02', cover: 'cover-vlsi-digital', key: 'vlsi_digital' },
+    { name: 'Analog VLSI Design', icon: 'fas fa-wave-square', code: 'VLSI-03', cover: 'cover-vlsi-analog', key: 'vlsi_analog' },
+    { name: 'Physical Design', icon: 'fas fa-drafting-compass', code: 'VLSI-04', cover: 'cover-vlsi-physical', key: 'vlsi_physical' },
+    { name: 'Verilog HDL', icon: 'fas fa-code', code: 'VLSI-05', cover: 'cover-vlsi-digital', key: 'vlsi_verilog' },
+    { name: 'SystemVerilog', icon: 'fas fa-code', code: 'VLSI-06', cover: 'cover-vlsi-digital', key: 'vlsi_sv' },
+    { name: 'Low Power VLSI', icon: 'fas fa-battery-half', code: 'VLSI-07', cover: 'cover-vlsi-cmos', key: 'vlsi_lowpower' },
+    { name: 'Testing & Verification', icon: 'fas fa-check-double', code: 'VLSI-08', cover: 'cover-vlsi-analog', key: 'vlsi_testing' },
+    { name: 'FPGA Design', icon: 'fas fa-microchip', code: 'VLSI-09', cover: 'cover-vlsi-digital', key: 'vlsi_fpga' },
+    { name: 'Analog Layout', icon: 'fas fa-drafting-compass', code: 'VLSI-10', cover: 'cover-vlsi-physical', key: 'vlsi_layout' }
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   DRIVE LINKS — key: { notes, pyq } OR direct link
+   ═══════════════════════════════════════════════════════════════ */
+var DRIVE_LINKS = {
+  NAS: { notes: '', pyq: 'https://drive.google.com/drive/folders/1h5Hohywjf7YXOCLWIC8yNMhLtvajujJW' }
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   DOWNLOADS COUNTER
+   ═══════════════════════════════════════════════════════════════ */
+var DOWNLOADS = {
+  NAS: { notes: 1240, pyq: 892 }
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════════════ */
+var route = { view: 'home', year: null, branch: null, semester: null, subject: null, folderType: null, gateBranch: null, gateSubject: null, vlsiSubject: null };
+var searchQuery = '';
+var isAdmin = false;
+
+var viewEl = document.getElementById('view');
+var crumbEl = document.getElementById('breadcrumb');
+var searchInput = document.getElementById('searchInput');
+var searchClearBtn = document.getElementById('searchClear');
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════════ */
+function isPlaceholder(url) {
+  return !url || url.indexOf('YOUR_') !== -1 || url.indexOf('SAMPLE_') !== -1;
+}
+
+function formatNumber(num) {
+  if (num >= 1000) return (num / 1000).toFixed(1).replace('.0', '') + 'k';
+  return num.toString();
+}
+
+function getYear(id) { return YEARS.filter(function(y) { return y.id === id; })[0]; }
+function getBranch(yearId, branchId) {
+  var y = getYear(yearId);
+  if (!y || !y.branches) return null;
+  return y.branches.filter(function(b) { return b.id === branchId; })[0];
+}
+function getSemester(yearId, branchId, semId) {
+  var y = getYear(yearId);
+  if (y.type === 'common') return y.semesters.filter(function(s) { return s.id === semId; })[0];
+  var b = getBranch(yearId, branchId);
+  if (!b) return null;
+  return b.semesters.filter(function(s) { return s.id === semId; })[0];
+}
+function getLink(key) { return DRIVE_LINKS[key] || { notes: '', pyq: '' }; }
+function getDl(key) { return DOWNLOADS[key] || { notes: 0, pyq: 0 }; }
+function totalDl() {
+  var t = 0;
+  for (var k in DOWNLOADS) t += DOWNLOADS[k].notes + DOWNLOADS[k].pyq;
+  return t;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATE
+   ═══════════════════════════════════════════════════════════════ */
+function navigate(newRoute) {
+  route = Object.assign({}, route, newRoute);
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  route = { view: 'home', year: null, branch: null, semester: null, subject: null, folderType: null, gateBranch: null, gateSubject: null, vlsiSubject: null };
+  searchQuery = '';
+  searchInput.value = '';
+  searchClearBtn.classList.remove('show');
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════════════ */
+function render() {
+  renderBreadcrumb();
+  var v = route.view;
+  if (v === 'home') renderHome();
+  else if (v === 'year') renderYear();
+  else if (v === 'semester') renderSemester();
+  else if (v === 'subject') renderSubject();
+  else if (v === 'folder') renderFolder();
+  else if (v === 'gate') renderGateBranches();
+  else if (v === 'gate-branch') renderGateSubjects();
+  else if (v === 'gate-subject') renderGateSubjectDetail();
+  else if (v === 'vlsi') renderVlsiSubjects();
+  else if (v === 'vlsi-subject') renderVlsiSubjectDetail();
+  else if (v === 'search') renderSearch();
+}
+
+function renderBreadcrumb() {
+  var v = route.view;
+  var html = '<span class="crumb ' + (v === 'home' ? 'active' : '') + '" onclick="goHome()">' +
+    '<i class="fas fa-house"></i> Home</span>';
+
+  // B.Tech path
+  if (route.year && v !== 'gate' && v !== 'gate-branch' && v !== 'gate-subject' && v !== 'vlsi' && v !== 'vlsi-subject') {
+    var y = getYear(route.year);
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb ' + (v === 'year' ? 'active' : '') + '" onclick="navigate({view:\'year\',year:\'' + route.year + '\',branch:null,semester:null,subject:null,folderType:null})">' + y.name + '</span>';
+  }
+  if (route.branch && v !== 'gate-branch' && v !== 'gate-subject' && v !== 'vlsi-subject') {
+    var b = getBranch(route.year, route.branch);
+    if (b) {
+      html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+      html += '<span class="crumb ' + (v === 'branch' ? 'active' : '') + '">' + b.name + '</span>';
+    }
+  }
+  if (route.semester && v !== 'gate' && v !== 'gate-branch' && v !== 'gate-subject' && v !== 'vlsi' && v !== 'vlsi-subject') {
+    var s = getSemester(route.year, route.branch, route.semester);
+    if (s) {
+      html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+      html += '<span class="crumb ' + (v === 'semester' ? 'active' : '') + '" onclick="navigate({view:\'semester\',year:\'' + route.year + '\',branch:' + (route.branch ? "'" + route.branch + "'" : 'null') + ',semester:\'' + route.semester + '\',subject:null,folderType:null})">' + s.name + '</span>';
+    }
+  }
+  if (route.subject && v !== 'gate-subject' && v !== 'vlsi-subject') {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb ' + (v === 'subject' ? 'active' : '') + '">' + route.subject + '</span>';
+  }
+  if (route.folderType) {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb active">' + (route.folderType === 'notes' ? 'Notes' : 'PYQ') + '</span>';
+  }
+
+  // GATE path
+  if (v === 'gate' || v === 'gate-branch' || v === 'gate-subject') {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb ' + (v === 'gate' ? 'active' : '') + '" onclick="navigate({view:\'gate\',gateBranch:null,gateSubject:null})">PW GATE Notes</span>';
+  }
+  if (route.gateBranch && (v === 'gate-branch' || v === 'gate-subject')) {
+    var gb = GATE_DATA.branches.filter(function(b) { return b.id === route.gateBranch; })[0];
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb ' + (v === 'gate-branch' ? 'active' : '') + '" onclick="navigate({view:\'gate-branch\',gateBranch:\'' + route.gateBranch + '\',gateSubject:null})">' + gb.name + '</span>';
+  }
+  if (route.gateSubject && v === 'gate-subject') {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb active">' + route.gateSubject + '</span>';
+  }
+
+  // VLSI path
+  if (v === 'vlsi' || v === 'vlsi-subject') {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb ' + (v === 'vlsi' ? 'active' : '') + '" onclick="navigate({view:\'vlsi\',vlsiSubject:null})">VLSI Chip Craft</span>';
+  }
+  if (route.vlsiSubject && v === 'vlsi-subject') {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb active">' + route.vlsiSubject + '</span>';
+  }
+
+  if (v === 'search') {
+    html += ' <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--muted)"></i> ';
+    html += '<span class="crumb active">Search Results</span>';
+  }
+  crumbEl.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HOME — 3 SECTIONS: B.Tech, PW GATE, VLSI
+   ═══════════════════════════════════════════════════════════════ */
+function renderHome() {
+  var html = '';
+
+  // Stats
+  html += '<div class="stats-bar">';
+  html += '<div class="stat-item"><div class="stat-icon blue"><i class="fas fa-layer-group"></i></div>' +
+    '<div class="stat-info"><div class="stat-value">4</div><div class="stat-label">B.Tech Years</div></div></div>';
+  html += '<div class="stat-item"><div class="stat-icon green"><i class="fas fa-code-branch"></i></div>' +
+    '<div class="stat-info"><div class="stat-value">6</div><div class="stat-label">Branches</div></div></div>';
+  html += '<div class="stat-item"><div class="stat-icon orange"><i class="fas fa-download"></i></div>' +
+    '<div class="stat-info"><div class="stat-value">' + formatNumber(totalDl()) + '</div><div class="stat-label">Downloads</div></div></div>';
+  html += '<div class="stat-item"><div class="stat-icon purple"><i class="fas fa-book"></i></div>' +
+    '<div class="stat-info"><div class="stat-value">100+</div><div class="stat-label">Subjects</div></div></div>';
+  html += '</div>';
+
+  // ═══ SECTION 1: B.TECH ═══
+  html += '<div class="home-section">';
+  html += '<div class="section-title"><span class="st-icon btech"><i class="fas fa-graduation-cap"></i></span> B.Tech Notes <span class="section-sub">AKTU Syllabus</span></div>';
+  html += '<div class="gallery-grid">';
+  YEARS.forEach(function(y) {
+    html += '<div class="gallery-card" onclick="navigate({view:\'year\',year:\'' + y.id + '\',branch:null,semester:null,subject:null,folderType:null})">';
+    html += '<div class="card-cover ' + y.cover + '"><i class="' + y.icon + ' cover-icon"></i></div>';
+    html += '<div class="card-body">';
+    html += '<span class="card-badge badge-blue">' + (y.type === 'common' ? 'Common' : '6 Branches') + '</span>';
+    html += '<div class="card-title-main">' + y.name + '</div>';
+    html += '<div class="card-desc"><i class="fas fa-info-circle"></i> ' + y.subtitle + '</div>';
+    html += '<div class="card-meta"><div class="meta-tags">';
+    html += '<span class="meta-tag notes-tag">Notes</span><span class="meta-tag pyq-tag">PYQs</span>';
+    html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+    html += '</div></div>';
+  });
+  html += '</div></div>';
+
+  // ═══ SECTION 2: PW GATE NOTES ═══
+  html += '<div class="home-section">';
+  html += '<div class="section-title"><span class="st-icon gate"><i class="fas fa-medal"></i></span> PW GATE Notes <span class="section-sub">Physics Wallah</span></div>';
+  html += '<div class="gallery-grid">';
+  html += '<div class="gallery-card" onclick="navigate({view:\'gate\',gateBranch:null,gateSubject:null})">';
+  html += '<div class="card-cover ' + GATE_DATA.cover + '"><i class="' + GATE_DATA.icon + ' cover-icon"></i></div>';
+  html += '<div class="card-body">';
+  html += '<span class="card-badge badge-red">' + GATE_DATA.branches.length + ' Branches</span>';
+  html += '<div class="card-title-main">' + GATE_DATA.name + '</div>';
+  html += '<div class="card-desc"><i class="fas fa-info-circle"></i> ' + GATE_DATA.subtitle + '</div>';
+  html += '<div class="card-meta"><div class="meta-tags">';
+  html += '<span class="meta-tag gate-tag">GATE</span><span class="meta-tag">Branchwise</span>';
+  html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+  html += '</div></div>';
+  html += '</div></div>';
+
+  // ═══ SECTION 3: VLSI CHIP CRAFT ═══
+  html += '<div class="home-section">';
+  html += '<div class="section-title"><span class="st-icon vlsi"><i class="fas fa-microchip"></i></span> VLSI Chip Craft <span class="section-sub">Chip Design</span></div>';
+  html += '<div class="gallery-grid">';
+  html += '<div class="gallery-card" onclick="navigate({view:\'vlsi\',vlsiSubject:null})">';
+  html += '<div class="card-cover ' + VLSI_DATA.cover + '"><i class="' + VLSI_DATA.icon + ' cover-icon"></i></div>';
+  html += '<div class="card-body">';
+  html += '<span class="card-badge badge-cyan">' + VLSI_DATA.subjects.length + ' Subjects</span>';
+  html += '<div class="card-title-main">' + VLSI_DATA.name + '</div>';
+  html += '<div class="card-desc"><i class="fas fa-info-circle"></i> ' + VLSI_DATA.subtitle + '</div>';
+  html += '<div class="card-meta"><div class="meta-tags">';
+  html += '<span class="meta-tag vlsi-tag">VLSI</span><span class="meta-tag">Subjectwise</span>';
+  html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+  html += '</div></div>';
+  html += '</div></div>';
+
+  viewEl.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   B.TECH VIEWS
+   ═══════════════════════════════════════════════════════════════ */
+function renderYear() {
+  var y = getYear(route.year);
+  if (y.type === 'common') {
+    var html = '<div class="page-header">' +
+      '<h2><span class="hicon"><i class="fas fa-users"></i></span> ' + y.name + ' · Common</h2>' +
+      '<p>Common to all branches · Choose semester</p></div>';
+    html += '<div class="gallery-grid">';
+    y.semesters.forEach(function(s) {
+      html += '<div class="gallery-card" onclick="navigate({view:\'semester\',year:\'' + y.id + '\',branch:null,semester:\'' + s.id + '\',subject:null,folderType:null})">' +
+        '<div class="card-cover cover-sem"><i class="fas fa-folder-open cover-icon"></i></div>' +
+        '<div class="card-body">' +
+        '<span class="card-badge badge-blue">' + s.subjects.length + ' Subjects</span>' +
+        '<div class="card-title-main">' + s.name + '</div>' +
+        '<div class="card-desc"><i class="fas fa-book"></i> Notes & PYQs</div>' +
+        '<div class="card-meta"><div class="meta-tags">' +
+        '<span class="meta-tag notes-tag">Notes</span><span class="meta-tag pyq-tag">PYQs</span>' +
+        '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>' +
+        '</div></div>';
+    });
+    html += '</div>';
+    viewEl.innerHTML = html;
+  } else {
+    var html = '<div class="page-header">' +
+      '<h2><span class="hicon"><i class="fas fa-code-branch"></i></span> ' + y.name + ' · Select Branch</h2>' +
+      '<p>Choose your engineering branch</p></div>';
+    html += '<div class="gallery-grid">';
+    y.branches.forEach(function(b) {
+      html += '<div class="gallery-card" onclick="navigate({view:\'semester\',year:\'' + y.id + '\',branch:\'' + b.id + '\',semester:\'' + b.semesters[0].id + '\',subject:null,folderType:null})">';
+      html += '<div class="card-cover ' + b.cover + '"><i class="' + b.icon + ' cover-icon"></i></div>';
+      html += '<div class="card-body">';
+      html += '<span class="card-badge badge-blue">' + b.semesters.length + ' Semesters</span>';
+      html += '<div class="card-title-main">' + b.name + '</div>';
+      html += '<div class="card-desc"><i class="fas fa-book"></i> ' + b.full + '</div>';
+      html += '<div class="card-meta"><div class="meta-tags">';
+      html += '<span class="meta-tag notes-tag">Notes</span><span class="meta-tag pyq-tag">PYQs</span>';
+      html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+    viewEl.innerHTML = html;
+  }
+}
+
+function renderSemester() {
+  var y = getYear(route.year);
+  var sem = getSemester(route.year, route.branch, route.semester);
+  if (!sem) { goHome(); return; }
+  var branchName = route.branch ? ' · ' + getBranch(route.year, route.branch).name : ' · Common';
+
+  var tabsHtml = '';
+  if (y.type === 'branchwise' && route.branch) {
+    var b = getBranch(route.year, route.branch);
+    tabsHtml = '<div style="display:flex;gap:0.6rem;margin-bottom:1.5rem;flex-wrap:wrap;">';
+    b.semesters.forEach(function(s) {
+      var active = s.id === route.semester;
+      tabsHtml += '<button onclick="navigate({view:\'semester\',year:\'' + route.year + '\',branch:\'' + route.branch + '\',semester:\'' + s.id + '\',subject:null,folderType:null})" style="padding:0.6rem 1.2rem;border-radius:100px;border:1px solid ' + (active ? 'var(--accent)' : 'var(--border)') + ';background:' + (active ? 'var(--accent)' : 'var(--card)') + ';color:' + (active ? 'white' : 'var(--text)') + ';font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;">' + s.name + '</button>';
+    });
+    tabsHtml += '</div>';
+  }
+
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon"><i class="fas fa-folder-open"></i></span> ' + sem.name + branchName + '</h2>' +
+    '<p>' + y.name + ' · ' + sem.subjects.length + ' subjects</p></div>';
+  html += tabsHtml;
+  html += '<div class="gallery-grid">';
+
+  sem.subjects.forEach(function(subj) {
+    var dl = getDl(subj.key);
+    var t = dl.notes + dl.pyq;
+    html += '<div class="gallery-card" onclick="navigate({view:\'subject\',year:\'' + route.year + '\',branch:' + (route.branch ? "'" + route.branch + "'" : 'null') + ',semester:\'' + route.semester + '\',subject:' + JSON.stringify(subj.name).replace(/"/g, '&quot;') + ',folderType:null})">';
+    html += '<div class="card-cover cover-subject"><i class="' + subj.icon + ' cover-icon"></i>';
+    if (t > 0) html += '<div class="cover-downloads"><i class="fas fa-download"></i> ' + formatNumber(t) + '</div>';
+    html += '</div>';
+    html += '<div class="card-body">';
+    html += '<span class="card-badge badge-green">Ready</span>';
+    html += '<div class="card-title-main">' + subj.name + '</div>';
+    html += '<div class="card-desc"><i class="fas fa-hashtag"></i> ' + subj.code + '</div>';
+    html += '<div class="card-meta"><div class="meta-tags">';
+    html += '<span class="meta-tag notes-tag">Notes</span><span class="meta-tag pyq-tag">PYQs</span>';
+    html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  viewEl.innerHTML = html;
+}
+
+function renderSubject() {
+  var sem = getSemester(route.year, route.branch, route.semester);
+  if (!sem) { goHome(); return; }
+  var subj = sem.subjects.filter(function(s) { return s.name === route.subject; })[0];
+  if (!subj) { goHome(); return; }
+  var link = getLink(subj.key);
+  var dl = getDl(subj.key);
+
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon"><i class="fas fa-folder-open"></i></span> ' + route.subject + '</h2>' +
+    '<p>' + subj.code + ' · Choose a folder</p></div>';
+  html += '<div class="gallery-grid">';
+
+  html += '<div class="gallery-card" onclick="navigate({view:\'folder\',year:\'' + route.year + '\',branch:' + (route.branch ? "'" + route.branch + "'" : 'null') + ',semester:\'' + route.semester + '\',subject:' + JSON.stringify(subj.name).replace(/"/g, '&quot;') + ',folderType:\'notes\'})">';
+  html += '<div class="card-cover cover-notes"><i class="fas fa-book-open cover-icon"></i></div>';
+  html += '<div class="card-body"><span class="card-badge badge-blue">Notes</span>';
+  html += '<div class="card-title-main">Unit-wise Notes</div>';
+  html += '<div class="card-desc"><i class="fas fa-folder-open"></i> All units · Complete notes</div>';
+  html += '<div class="card-meta"><div class="meta-tags"><span class="meta-tag notes-tag">PDF</span></div>';
+  html += '<div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div></div></div>';
+
+  html += '<div class="gallery-card" onclick="navigate({view:\'folder\',year:\'' + route.year + '\',branch:' + (route.branch ? "'" + route.branch + "'" : 'null') + ',semester:\'' + route.semester + '\',subject:' + JSON.stringify(subj.name).replace(/"/g, '&quot;') + ',folderType:\'pyq\'})">';
+  html += '<div class="card-cover cover-pyq"><i class="fas fa-clock-rotate-left cover-icon"></i></div>';
+  html += '<div class="card-body"><span class="card-badge badge-orange">PYQ</span>';
+  html += '<div class="card-title-main">Previous Year Questions</div>';
+  html += '<div class="card-desc"><i class="fas fa-clock-rotate-left"></i> Previous years · Model papers</div>';
+  html += '<div class="card-meta"><div class="meta-tags"><span class="meta-tag pyq-tag">PYQ</span></div>';
+  html += '<div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div></div></div>';
+
+  html += '</div>';
+  viewEl.innerHTML = html;
+}
+
+function renderFolder() {
+  var sem = getSemester(route.year, route.branch, route.semester);
+  if (!sem) { goHome(); return; }
+  var subj = sem.subjects.filter(function(s) { return s.name === route.subject; })[0];
+  if (!subj) { goHome(); return; }
+  var link = getLink(subj.key);
+  var dl = getDl(subj.key);
+  var folderType = route.folderType;
+  var url = folderType === 'notes' ? link.notes : link.pyq;
+  var count = folderType === 'notes' ? dl.notes : dl.pyq;
+  countDownload(subj.key, folderType);
+  if (url && !isPlaceholder(url)) window.open(url, '_blank');
+
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon"><i class="fas fa-' + (folderType === 'notes' ? 'book-open' : 'clock-rotate-left') + '"></i></span> ' +
+    (folderType === 'notes' ? 'Unit-wise Notes' : 'Previous Year Questions') + '</h2>' +
+    '<p>' + route.subject + ' · ' + subj.code + '</p></div>';
+
+  if (!url || isPlaceholder(url)) {
+    html += '<div class="panel"><div class="empty"><i class="fas fa-hourglass-half"></i>' +
+      '<h4>Coming Soon</h4><p>Yeh folder abhi upload nahi hua hai</p>' +
+      '<div style="margin-top:1.5rem;">' +
+      '<button onclick="navigate({view:\'subject\',year:\'' + route.year + '\',branch:' + (route.branch ? "'" + route.branch + "'" : 'null') + ',semester:\'' + route.semester + '\',subject:' + JSON.stringify(subj.name).replace(/"/g, '&quot;') + ',folderType:null})" class="btn"><i class="fas fa-arrow-left"></i> Back</button>' +
+      '</div></div></div>';
+  } else {
+    html += '<div class="panel" style="text-align:center;">' +
+      '<div style="font-size:3rem;color:var(--accent);margin-bottom:1rem;"><i class="fas fa-check-circle"></i></div>' +
+      '<h3 style="font-size:1.3rem;font-weight:800;margin-bottom:0.5rem;">Opening Google Drive...</h3>' +
+      '<p style="color:var(--text2);margin-bottom:1.5rem;">Agar automatically nahi khula toh niche button click karo</p>' +
+      '<a href="' + url + '" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 1.6rem;">' +
+      '<i class="fas fa-external-link-alt"></i> Open in Google Drive</a>' +
+      '<div style="margin-top:2rem;color:var(--muted);font-size:0.85rem;">' +
+      '<i class="fas fa-download"></i> ' + formatNumber(count) + ' downloads so far</div></div>';
+  }
+  viewEl.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PW GATE VIEWS
+   ═══════════════════════════════════════════════════════════════ */
+function renderGateBranches() {
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon" style="background:var(--gate-soft);color:var(--gate);"><i class="fas fa-medal"></i></span> PW GATE Notes</h2>' +
+    '<p>Physics Wallah GATE Preparation · Choose your branch</p></div>';
+  html += '<div class="gallery-grid">';
+  GATE_DATA.branches.forEach(function(b) {
+    html += '<div class="gallery-card" onclick="navigate({view:\'gate-branch\',gateBranch:\'' + b.id + '\',gateSubject:null})">';
+    html += '<div class="card-cover ' + b.cover + '"><i class="' + b.icon + ' cover-icon"></i></div>';
+    html += '<div class="card-body">';
+    html += '<span class="card-badge badge-red">' + b.subjects.length + ' Subjects</span>';
+    html += '<div class="card-title-main">' + b.name + '</div>';
+    html += '<div class="card-desc"><i class="fas fa-book"></i> ' + b.full + '</div>';
+    html += '<div class="card-meta"><div class="meta-tags">';
+    html += '<span class="meta-tag gate-tag">GATE</span><span class="meta-tag">PW Notes</span>';
+    html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  viewEl.innerHTML = html;
+}
+
+function renderGateSubjects() {
+  var b = GATE_DATA.branches.filter(function(x) { return x.id === route.gateBranch; })[0];
+  if (!b) { goHome(); return; }
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon" style="background:var(--gate-soft);color:var(--gate);"><i class="' + b.icon + '"></i></span> ' + b.name + '</h2>' +
+    '<p>' + b.full + ' · ' + b.subjects.length + ' subjects</p></div>';
+  html += '<div class="gallery-grid">';
+  b.subjects.forEach(function(s) {
+    var dl = getDl(s.key);
+    var t = dl.notes + dl.pyq;
+    html += '<div class="gallery-card" onclick="navigate({view:\'gate-subject\',gateBranch:\'' + b.id + '\',gateSubject:' + JSON.stringify(s.name).replace(/"/g, '&quot;') + '})">';
+    html += '<div class="card-cover cover-subject"><i class="' + s.icon + ' cover-icon"></i>';
+    if (t > 0) html += '<div class="cover-downloads"><i class="fas fa-download"></i> ' + formatNumber(t) + '</div>';
+    html += '</div>';
+    html += '<div class="card-body">';
+    html += '<span class="card-badge badge-red">GATE</span>';
+    html += '<div class="card-title-main">' + s.name + '</div>';
+    html += '<div class="card-desc"><i class="fas fa-hashtag"></i> ' + s.code + '</div>';
+    html += '<div class="card-meta"><div class="meta-tags">';
+    html += '<span class="meta-tag gate-tag">PW</span><span class="meta-tag">Notes</span>';
+    html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  viewEl.innerHTML = html;
+}
+
+function renderGateSubjectDetail() {
+  var b = GATE_DATA.branches.filter(function(x) { return x.id === route.gateBranch; })[0];
+  if (!b) { goHome(); return; }
+  var s = b.subjects.filter(function(x) { return x.name === route.gateSubject; })[0];
+  if (!s) { goHome(); return; }
+  var link = getLink(s.key);
+  var url = link.notes || link.pyq;
+
+  // Increment download
+  if (!DOWNLOADS[s.key]) DOWNLOADS[s.key] = { notes: 0, pyq: 0 };
+  DOWNLOADS[s.key].notes = (DOWNLOADS[s.key].notes || 0) + 1;
+  try { localStorage.setItem('sv-downloads', JSON.stringify(DOWNLOADS)); } catch(e) {}
+
+  if (url && !isPlaceholder(url)) window.open(url, '_blank');
+
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon" style="background:var(--gate-soft);color:var(--gate);"><i class="' + s.icon + '"></i></span> ' + s.name + '</h2>' +
+    '<p>' + b.name + ' · ' + s.code + '</p></div>';
+
+  if (!url || isPlaceholder(url)) {
+    html += '<div class="panel"><div class="empty"><i class="fas fa-hourglass-half"></i>' +
+      '<h4>Coming Soon</h4><p>Yeh notes abhi upload nahi hue hain</p></div></div>';
+  } else {
+    html += '<div class="panel" style="text-align:center;">' +
+      '<div style="font-size:3rem;color:var(--gate);margin-bottom:1rem;"><i class="fas fa-check-circle"></i></div>' +
+      '<h3 style="font-size:1.3rem;font-weight:800;margin-bottom:0.5rem;">Opening Google Drive...</h3>' +
+      '<p style="color:var(--text2);margin-bottom:1.5rem;">Agar automatically nahi khula toh niche button click karo</p>' +
+      '<a href="' + url + '" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 1.6rem;background:var(--gate);border-color:var(--gate);">' +
+      '<i class="fas fa-external-link-alt"></i> Open in Google Drive</a></div>';
+  }
+  viewEl.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VLSI VIEWS
+   ═══════════════════════════════════════════════════════════════ */
+function renderVlsiSubjects() {
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon" style="background:var(--vlsi-soft);color:var(--vlsi);"><i class="fas fa-microchip"></i></span> VLSI Chip Craft</h2>' +
+    '<p>' + VLSI_DATA.subjects.length + ' subjects · Chip Design & Verification</p></div>';
+  html += '<div class="gallery-grid">';
+  VLSI_DATA.subjects.forEach(function(s) {
+    var dl = getDl(s.key);
+    var t = dl.notes + dl.pyq;
+    html += '<div class="gallery-card" onclick="navigate({view:\'vlsi-subject\',vlsiSubject:' + JSON.stringify(s.name).replace(/"/g, '&quot;') + '})">';
+    html += '<div class="card-cover ' + s.cover + '"><i class="' + s.icon + ' cover-icon"></i>';
+    if (t > 0) html += '<div class="cover-downloads"><i class="fas fa-download"></i> ' + formatNumber(t) + '</div>';
+    html += '</div>';
+    html += '<div class="card-body">';
+    html += '<span class="card-badge badge-cyan">VLSI</span>';
+    html += '<div class="card-title-main">' + s.name + '</div>';
+    html += '<div class="card-desc"><i class="fas fa-hashtag"></i> ' + s.code + '</div>';
+    html += '<div class="card-meta"><div class="meta-tags">';
+    html += '<span class="meta-tag vlsi-tag">Chip Craft</span><span class="meta-tag">Notes</span>';
+    html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  viewEl.innerHTML = html;
+}
+
+function renderVlsiSubjectDetail() {
+  var s = VLSI_DATA.subjects.filter(function(x) { return x.name === route.vlsiSubject; })[0];
+  if (!s) { goHome(); return; }
+  var link = getLink(s.key);
+  var url = link.notes || link.pyq;
+
+  if (!DOWNLOADS[s.key]) DOWNLOADS[s.key] = { notes: 0, pyq: 0 };
+  DOWNLOADS[s.key].notes = (DOWNLOADS[s.key].notes || 0) + 1;
+  try { localStorage.setItem('sv-downloads', JSON.stringify(DOWNLOADS)); } catch(e) {}
+
+  if (url && !isPlaceholder(url)) window.open(url, '_blank');
+
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon" style="background:var(--vlsi-soft);color:var(--vlsi);"><i class="' + s.icon + '"></i></span> ' + s.name + '</h2>' +
+    '<p>VLSI Chip Craft · ' + s.code + '</p></div>';
+
+  if (!url || isPlaceholder(url)) {
+    html += '<div class="panel"><div class="empty"><i class="fas fa-hourglass-half"></i>' +
+      '<h4>Coming Soon</h4><p>Yeh notes abhi upload nahi hue hain</p></div></div>';
+  } else {
+    html += '<div class="panel" style="text-align:center;">' +
+      '<div style="font-size:3rem;color:var(--vlsi);margin-bottom:1rem;"><i class="fas fa-check-circle"></i></div>' +
+      '<h3 style="font-size:1.3rem;font-weight:800;margin-bottom:0.5rem;">Opening Google Drive...</h3>' +
+      '<p style="color:var(--text2);margin-bottom:1.5rem;">Agar automatically nahi khula toh niche button click karo</p>' +
+      '<a href="' + url + '" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;padding:0.8rem 1.6rem;background:var(--vlsi);border-color:var(--vlsi);">' +
+      '<i class="fas fa-external-link-alt"></i> Open in Google Drive</a></div>';
+  }
+  viewEl.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SEARCH
+   ═══════════════════════════════════════════════════════════════ */
+searchInput.addEventListener('input', function(e) {
+  var val = e.target.value;
+  if (val.length > 0) searchClearBtn.classList.add('show');
+  else searchClearBtn.classList.remove('show');
+  searchQuery = val.toLowerCase().trim();
+  clearTimeout(window._searchTimer);
+  window._searchTimer = setTimeout(function() {
+    if (searchQuery) { route.view = 'search'; render(); }
+    else if (route.view === 'search') goHome();
+  }, 200);
+});
+
+function clearSearch() {
+  searchInput.value = '';
+  searchQuery = '';
+  searchClearBtn.classList.remove('show');
+  if (route.view === 'search') goHome();
+}
+
+function renderSearch() {
+  var q = searchQuery;
+  var results = [];
+
+  // Search B.Tech
+  YEARS.forEach(function(y) {
+    if (y.type === 'common') {
+      y.semesters.forEach(function(sem) {
+        sem.subjects.forEach(function(subj) {
+          if (subj.name.toLowerCase().indexOf(q) !== -1 || subj.code.toLowerCase().indexOf(q) !== -1) {
+            results.push({ type: 'btech', subj: subj, yearName: y.name, branchName: 'Common', semesterName: sem.name, yearId: y.id, branchId: null, semesterId: sem.id });
+          }
+        });
+      });
+    } else {
+      y.branches.forEach(function(b) {
+        b.semesters.forEach(function(sem) {
+          sem.subjects.forEach(function(subj) {
+            if (subj.name.toLowerCase().indexOf(q) !== -1 || subj.code.toLowerCase().indexOf(q) !== -1) {
+              results.push({ type: 'btech', subj: subj, yearName: y.name, branchName: b.name, semesterName: sem.name, yearId: y.id, branchId: b.id, semesterId: sem.id });
+            }
+          });
+        });
+      });
+    }
+  });
+
+  // Search GATE
+  GATE_DATA.branches.forEach(function(b) {
+    b.subjects.forEach(function(subj) {
+      if (subj.name.toLowerCase().indexOf(q) !== -1 || subj.code.toLowerCase().indexOf(q) !== -1) {
+        results.push({ type: 'gate', subj: subj, branchName: b.name, branchId: b.id });
+      }
+    });
+  });
+
+  // Search VLSI
+  VLSI_DATA.subjects.forEach(function(subj) {
+    if (subj.name.toLowerCase().indexOf(q) !== -1 || subj.code.toLowerCase().indexOf(q) !== -1) {
+      results.push({ type: 'vlsi', subj: subj });
+    }
+  });
+
+  var html = '<div class="page-header">' +
+    '<h2><span class="hicon"><i class="fas fa-magnifying-glass"></i></span> Search Results</h2>' +
+    '<p>' + results.length + ' result(s) for "' + searchQuery + '"</p></div>';
+
+  if (results.length === 0) {
+    html += '<div class="panel"><div class="empty"><i class="fas fa-ghost"></i>' +
+      '<h4>No matches found</h4><p>Try a different keyword</p></div></div>';
+  } else {
+    html += '<div class="gallery-grid">';
+    results.forEach(function(r) {
+      var s = r.subj;
+      var subLine = r.type === 'btech' ? (r.yearName + ' · ' + r.branchName + ' · ' + r.semesterName) :
+                    r.type === 'gate' ? ('PW GATE · ' + r.branchName) : 'VLSI Chip Craft';
+      var badge = r.type === 'btech' ? 'badge-green' : (r.type === 'gate' ? 'badge-red' : 'badge-cyan');
+      var badgeText = r.type === 'btech' ? 'B.Tech' : (r.type === 'gate' ? 'GATE' : 'VLSI');
+      var dl = getDl(s.key);
+      var t = dl.notes + dl.pyq;
+      var onclick = r.type === 'btech'
+        ? 'navigate({view:\'subject\',year:\'' + r.yearId + '\',branch:' + (r.branchId ? "'" + r.branchId + "'" : 'null') + ',semester:\'' + r.semesterId + '\',subject:' + JSON.stringify(s.name).replace(/"/g, '&quot;') + ',folderType:null})'
+        : r.type === 'gate'
+        ? 'navigate({view:\'gate-subject\',gateBranch:\'' + r.branchId + '\',gateSubject:' + JSON.stringify(s.name).replace(/"/g, '&quot;') + '})'
+        : 'navigate({view:\'vlsi-subject\',vlsiSubject:' + JSON.stringify(s.name).replace(/"/g, '&quot;') + '})';
+
+      html += '<div class="gallery-card" onclick="' + onclick + '">';
+      html += '<div class="card-cover cover-subject"><i class="' + s.icon + ' cover-icon"></i>';
+      if (t > 0) html += '<div class="cover-downloads"><i class="fas fa-download"></i> ' + formatNumber(t) + '</div>';
+      html += '</div>';
+      html += '<div class="card-body">';
+      html += '<span class="card-badge ' + badge + '">' + badgeText + '</span>';
+      html += '<div class="card-title-main">' + s.name + '</div>';
+      html += '<div class="card-desc"><i class="fas fa-folder"></i> ' + subLine + '</div>';
+      html += '<div class="card-meta"><div class="meta-tags">';
+      html += '<span class="meta-tag notes-tag">Notes</span>';
+      html += '</div><div class="card-arrow-btn"><i class="fas fa-arrow-right"></i></div></div>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+  }
+  viewEl.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DOWNLOAD COUNTER
+   ═══════════════════════════════════════════════════════════════ */
+function countDownload(key, type) {
+  if (!DOWNLOADS[key]) DOWNLOADS[key] = { notes: 0, pyq: 0 };
+  DOWNLOADS[key][type] = (DOWNLOADS[key][type] || 0) + 1;
+  try { localStorage.setItem('sv-downloads', JSON.stringify(DOWNLOADS)); } catch(e) {}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN
+   ═══════════════════════════════════════════════════════════════ */
+function openLoginModal() {
+  document.getElementById('loginModal').classList.add('show');
+  document.getElementById('adminPassword').value = '';
+  setTimeout(function() { document.getElementById('adminPassword').focus(); }, 100);
+}
+function closeLoginModal() { document.getElementById('loginModal').classList.remove('show'); }
+function submitLogin() {
+  var pass = document.getElementById('adminPassword').value;
+  if (pass === ADMIN_PASSWORD) {
+    isAdmin = true;
+    try { sessionStorage.setItem('sv-admin', 'true'); } catch(e) {}
+    updateAdminUI();
+    closeLoginModal();
+    showToast('Welcome Admin! 🎉', 'success');
+  } else {
+    showToast('Galat password!', 'error');
+    document.getElementById('adminPassword').value = '';
+  }
+}
+function logout() {
+  isAdmin = false;
+  try { sessionStorage.removeItem('sv-admin'); } catch(e) {}
+  updateAdminUI();
+  showToast('Logged out', 'success');
+}
+function updateAdminUI() {
+  var adminBtn = document.getElementById('adminBtn');
+  var uploadBtn = document.getElementById('uploadBtn');
+  var logoutBtn = document.getElementById('logoutBtn');
+  var adminBadge = document.getElementById('adminBadge');
+  if (isAdmin) {
+    adminBtn.style.display = 'none';
+    uploadBtn.classList.add('show');
+    logoutBtn.classList.add('show');
+    adminBadge.classList.add('show');
+  } else {
+    adminBtn.style.display = 'flex';
+    uploadBtn.classList.remove('show');
+    logoutBtn.classList.remove('show');
+    adminBadge.classList.remove('show');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UPLOAD
+   ═══════════════════════════════════════════════════════════════ */
+function openUploadModal() {
+  if (!isAdmin) { showToast('Sirf admin upload kar sakta hai', 'error'); openLoginModal(); return; }
+  var sel = document.getElementById('uploadSubject');
+  sel.innerHTML = '<option value="">-- Subject choose karo --</option>';
+
+  sel.innerHTML += '<optgroup label="🎓 B.Tech">';
+  YEARS.forEach(function(y) {
+    if (y.type === 'common') {
+      y.semesters.forEach(function(sem) {
+        sem.subjects.forEach(function(subj) {
+          sel.innerHTML += '<option value="' + subj.key + '">' + y.name + ' · ' + sem.name + ' · ' + subj.name + '</option>';
+        });
+      });
+    } else {
+      y.branches.forEach(function(b) {
+        b.semesters.forEach(function(sem) {
+          sem.subjects.forEach(function(subj) {
+            sel.innerHTML += '<option value="' + subj.key + '">' + y.name + ' · ' + b.name + ' · ' + sem.name + ' · ' + subj.name + '</option>';
+          });
+        });
+      });
+    }
+  });
+  sel.innerHTML += '</optgroup>';
+
+  sel.innerHTML += '<optgroup label="🏅 PW GATE">';
+  GATE_DATA.branches.forEach(function(b) {
+    b.subjects.forEach(function(subj) {
+      sel.innerHTML += '<option value="' + subj.key + '">GATE · ' + b.name + ' · ' + subj.name + '</option>';
+    });
+  });
+  sel.innerHTML += '</optgroup>';
+
+  sel.innerHTML += '<optgroup label="🔬 VLSI Chip Craft">';
+  VLSI_DATA.subjects.forEach(function(subj) {
+    sel.innerHTML += '<option value="' + subj.key + '">VLSI · ' + subj.name + '</option>';
+  });
+  sel.innerHTML += '</optgroup>';
+
+  document.getElementById('uploadModal').classList.add('show');
+  document.getElementById('uploadType').value = '';
+  document.getElementById('uploadLink').value = '';
+}
+function closeUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
+function submitUpload() {
+  if (!isAdmin) { showToast('Sirf admin upload kar sakta hai', 'error'); return; }
+  var key = document.getElementById('uploadSubject').value;
+  var type = document.getElementById('uploadType').value;
+  var link = document.getElementById('uploadLink').value.trim();
+  if (!key || !type || !link) { showToast('Sab fields fill karo!', 'error'); return; }
+  if (link.indexOf('http') !== 0) { showToast('Link https:// se start hona chahiye', 'error'); return; }
+  if (!DRIVE_LINKS[key]) DRIVE_LINKS[key] = { notes: '', pyq: '' };
+  DRIVE_LINKS[key][type] = link;
+  try { localStorage.setItem('sv-links', JSON.stringify(DRIVE_LINKS)); } catch(e) {}
+  showToast('Upload ho gaya! ✅', 'success');
+  closeUploadModal();
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOAD SAVED
+   ═══════════════════════════════════════════════════════════════ */
+try {
+  var saved = localStorage.getItem('sv-links');
+  if (saved) {
+    var parsed = JSON.parse(saved);
+    for (var k in parsed) DRIVE_LINKS[k] = parsed[k];
+  }
+} catch(e) {}
+try {
+  var sd = localStorage.getItem('sv-downloads');
+  if (sd) {
+    var pd = JSON.parse(sd);
+    for (var k2 in pd) DOWNLOADS[k2] = pd[k2];
+  }
+} catch(e) {}
+
+/* Close modals */
+document.getElementById('loginModal').addEventListener('click', function(e) {
+  if (e.target.id === 'loginModal') closeLoginModal();
+});
+document.getElementById('uploadModal').addEventListener('click', function(e) {
+  if (e.target.id === 'uploadModal') closeUploadModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeLoginModal(); closeUploadModal(); }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════════════ */
+var toastTimer;
+function showToast(msg, type) {
+  type = type || 'success';
+  var toast = document.getElementById('toast');
+  var msgEl = document.getElementById('toastMsg');
+  var icon = toast.querySelector('i');
+  msgEl.textContent = msg;
+  icon.className = type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+  icon.style.color = type === 'error' ? '#ef4444' : 'var(--success)';
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME
+   ═══════════════════════════════════════════════════════════════ */
+function toggleTheme() {
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var icon = document.getElementById('themeIcon');
+  if (isDark) {
+    document.documentElement.removeAttribute('data-theme');
+    icon.className = 'fas fa-moon';
+    localStorage.setItem('sv-theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    icon.className = 'fas fa-sun';
+    localStorage.setItem('sv-theme', 'dark');
+  }
+}
+if (localStorage.getItem('sv-theme') === 'dark') {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('themeIcon').className = 'fas fa-sun';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════════ */
+try {
+  if (sessionStorage.getItem('sv-admin') === 'true') isAdmin = true;
+} catch(e) {}
+
+updateAdminUI();
+render();
+</script>
+
+</body>
+</html>
